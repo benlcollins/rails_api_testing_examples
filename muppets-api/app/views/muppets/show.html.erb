@@ -1,0 +1,10 @@
+<p><%= link_to "Muppets", muppets_path %> / <%= @muppet.name %></p>  
+
+<h1><%= @muppet.name %></h1>
+<%= image_tag @muppet.image_url %>
+
+<p><%= link_to 'Edit', edit_muppet_path(@muppet) %> | <%= link_to 'Destroy', muppet_path(@muppet), :method => :delete, :'data-confirm' => 'Are you sure?' %></p>
+
+<%= form_for @muppet, :method => :delete do |f| %>
+  <%= f.submit 'Destroy' %>
+<% end %>
