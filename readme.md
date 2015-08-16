@@ -18,3 +18,6 @@ Look in your Rails app folder now and you can see at "test" folder with the foll
 - mailers (for testing mailer functionality)
 - models (where we write tests for our models)
 
+Start by creating a new branch:
+
+git checkout -b minitest_example
