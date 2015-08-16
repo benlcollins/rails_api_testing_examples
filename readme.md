@@ -2,7 +2,8 @@
 
 ## Step 1:
 
-Get the Muppets app up and running
+Get the Muppets app up and running locally:
+https://github.com/benlcollins/rails_api_testing_examples/tree/master/muppets-api
 
 ## Step 2: Using the Minitest framework
 
@@ -16,3 +17,4 @@ Look in your Rails app folder now and you can see at "test" folder with the foll
 - integration (where we write integration tests)
 - mailers (for testing mailer functionality)
 - models (where we write tests for our models)
+
