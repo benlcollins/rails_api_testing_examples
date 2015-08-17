@@ -2,7 +2,7 @@
 
 ## Step 1:
 
-Get the Muppets app up and set up running locally:
+Get the Muppets app up running locally:
 https://github.com/benlcollins/rails_api_testing_examples/tree/master/muppets-api	
 
 ## Step 2: Writing tests with the Minitest framework
