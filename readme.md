@@ -267,8 +267,13 @@ require 'rails_helper'
 
 RSpec.describe Muppet, :type => :model do
 	it "doesn't save without a valid name" do
-		muppet = Muppet.new
+		muppet = Muppet.new(name: "", image_url: "muppet.jpg")
 		expect(muppet).not_to be_valid, "Muppet saved without a valid name"
+	end
+
+	it "doesn't save without a valid image_url" do
+		muppet = Muppet.new(name: "muppet", image_url: "")
+		expect(muppet).not_to be_valid, "Muppet saved without a valid image_url"
 	end
 end
 ```
@@ -279,10 +284,14 @@ Comment out the name validation in muppet model and run model test
 bundle exec rspec spec/models
 ```
 
+```
+FF
+```
+
 This test FAILS at first, so uncomment out the name validation and the test should now pass.
 
 ```
-.
+..
 ```
 
 Add code to test image_url validation.
