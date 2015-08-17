@@ -95,14 +95,36 @@ It fails because the flunk assertion always fails. Useful to signal to other dev
 
 Comment out or delete the flunk test now.
 
-Let's add a final test to ensure that muppets with all parameters do indeed save *(question - is this necessary? This test passes with or without validations)*:
+Dry up the test code with a setup block:
 
 ```ruby
-test "muppet should save with valid parameters" do
-	muppet = Muppet.new(name: "Muppet Name", image_url: "image.jpg")
-	assert muppet.valid?, "Muppet not valid without all parameters"
-	assert_equal "Muppet Name", muppet.name, "The name of the muppets does not match!"
+require 'test_helper'
+require 'pry'
+
+class MuppetTest < ActiveSupport::TestCase
+
+	setup do
+		@muppet = Muppet.new(name: "Kermit", image_url: "kermit.jpg")
+	end
+
+	test "muppet does not save without a name" do
+		@muppet.name = nil
+		assert_not @muppet.save, "Test fails because app saves muppet without a name"
+	end
+
+	test "muppet should not save without an image_url" do
+		@muppet.image_url = nil
+		assert_not @muppet.save, "Saved muppet without an image url"
+	end
 end
+```
+
+Let's add a final test to ensure that muppets with all parameters do indeed save:
+
+```ruby
+test "valid muppet does save" do
+		assert @muppet.save 
+	end
 ```
 
 This should save with 3 runs and 4 assertions:
@@ -293,7 +315,7 @@ This test FAILS at first, so uncomment out the name validation and the test shou
 
 Add code to test image_url validation.
 
-And test that it saves muppet with valid attributes *(question - is this necessary?)*:
+And test that it saves muppet with valid attributes:
 
 ```ruby
 it "saves with valid name and image_url" do
