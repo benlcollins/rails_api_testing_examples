@@ -69,7 +69,7 @@ FF
 
 You should see two F's in your console and the two error messages we included, because at the moment you can save a muppet without a name or url. 
 
-Fix that by going back to your muppet model in the app folder and uncommenting the two validation lines.
+**Fix that by going back to your muppet model in the app folder and uncommenting the two validation lines.**
 
 Run the test again and it should now pass. You should see two ".." and no error messages:
 
@@ -95,7 +95,7 @@ It fails because the flunk assertion always fails. Useful to signal to other dev
 
 Comment out or delete the flunk test now.
 
-Let's add a final test to ensure that muppets with all parameters do indeed save:
+Let's add a final test to ensure that muppets with all parameters do indeed save *(question - is this necessary? This passes test with or without validations)*:
 
 ```ruby
 test "muppet should save with valid parameters" do
@@ -275,9 +275,11 @@ Comment out the name validation in muppet model and run model test
 bundle exec rspec spec/models
 ```
 
-.....it FAILS.
+This test FAILS at first, so uncomment out the name validation and the test should now pass.
 
-Uncomment out the name validation and the test should now pass.
+```
+.
+```
 
 Add code to test image_url validation.
 
@@ -326,6 +328,13 @@ Introduce Factory Girl to create data, and then test api endpoints:
 
 See:
 http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/
+
+
+## Create better looking output formats in terminal
+
+Look at https://github.com/kern/minitest-reporters
+
+and https://www.railstutorial.org/book/static_pages#sec-minitest_reporters
 
 
 ## Further Resources:
