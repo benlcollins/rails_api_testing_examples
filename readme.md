@@ -5,13 +5,13 @@
 Get the Muppets app up and running locally:
 https://github.com/benlcollins/rails_api_testing_examples/tree/master/muppets-api
 
-## Step 2: Using the Minitest framework
+## Step 2: Writing tests with the Minitest framework
 
 Minitest is the Rails built in testing framework.
 
 Official documentation: http://guides.rubyonrails.org/testing.html
 
-Look in your Rails app folder now and you can see at "test" folder with the following sub-folders:
+Look in your Rails app folder now and you can see the "test" folder with the following sub-folders:
 
 - controllers (where we write tests for our controllers)
 - fixtures (this is sample data for testing purposes)
@@ -45,7 +45,7 @@ require 'test_helper'
 
 class MuppetTest < ActiveSupport::TestCase
 	test "muppet should not save without a name" do
-		muppet = Muppet.new(name: "", image_url: "whatever.com/")
+		muppet = Muppet.new(name: "", image_url: "whatever.com/image.jpg")
 		assert_not muppet.save, "Saved muppet without a name"
 	end
 
@@ -61,11 +61,21 @@ Then run this test from the command line with:
 rake test
 ```
 
-This test should fail! 
+This test should fail!
 
-You should see two F's in your console and the two error messages we included, because at the moment you can save a muppet without a name or url. Fix that by going back to your muppet model in the app folder and uncommenting the two validation lines.
+```
+FF
+```
 
-Run the test again and it should now pass. You should see two ".." and no error messages.
+You should see two F's in your console and the two error messages we included, because at the moment you can save a muppet without a name or url. 
+
+Fix that by going back to your muppet model in the app folder and uncommenting the two validation lines.
+
+Run the test again and it should now pass. You should see two ".." and no error messages:
+
+```
+..
+```
 
 Try adding this code into test file:
 
@@ -77,7 +87,9 @@ end
 
 Now run the test in the command line again. Output:
 
+```
 ..F
+```
 
 It fails because the flunk assertion always fails. Useful to signal to other developers that you're still working on this test. 
 
@@ -87,7 +99,7 @@ Let's add a final test to ensure that muppets with all parameters do indeed save
 
 ```ruby
 test "muppet should save with valid parameters" do
-	muppet = Muppet.new(name: "Muppet Name", image_url: "muppet_images.com/")
+	muppet = Muppet.new(name: "Muppet Name", image_url: "muppet_images.com/image.jpg")
 	assert muppet.valid?, "Muppet not valid without all parameters"
 	assert_equal "Muppet Name", muppet.name, "The name of the muppets does not match!"
 end
@@ -95,7 +107,11 @@ end
 
 This should save with 3 runs and 4 assertions "..."
 
-Try changing muppet's name to "Kermit"...
+```
+...
+```
+
+Try changing "Muppet Name" to "Kermit" in the "assert_equal" line...
 
 ### Controller Test
 
@@ -121,7 +137,7 @@ get :index
 assert_response :success	
 ```
 
-Run to see the test pass. Asserts that the response comes with a specific status code, where :success indicates 200-299 code returned (see http://apidock.com/rails/Test/Unit/Assertions/assert_response).
+Run to see the test pass. Asserts that the response comes with a specific status code, where *:success* indicates a 200-299 code was returned (see http://apidock.com/rails/Test/Unit/Assertions/assert_response).
 
 Confirm that it's JSON being returned, add this assertion:
 
@@ -129,6 +145,12 @@ Confirm that it's JSON being returned, add this assertion:
 test "it should return JSON" do 
 	get :index, :format => :json
 end
+```
+
+Run the controller test again. It should pass:
+
+```
+..
 ```
 
 Now we want some seed data to use for testing, which we create with...
@@ -173,14 +195,28 @@ test "should add a new muppet with post action" do
 end
 ```
 
-* the post create is not working with this code *
+*the post create test is not working with this code - TBC*
 
 Add binding.pry and review in terminal window
 
+To finish, merge with master:
 
-## Step 3: RSpec testing framework
+git add 
+git commit -m 'Add minitest framework test suite'
+git checkout master
+git merge minitest_example
 
 
+
+## Step 3: Writing tests with the RSpec testing framework
+
+RSpec is a popular third-party framework for testing that allows you to write readable tests.
+
+Again, start by creating a new branch:
+
+```
+git checkout -b rspec_example
+```
 
 
 ## Resources:
@@ -189,7 +225,6 @@ http://buildingrails.com/a/rails_unit_testing_with_minitest_for_beginners
 http://buildingrails.com/a/rails_functional_testing_controllers_for_beginners_part_1
 http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/
 http://matthewlehner.net/rails-api-testing-guidelines/
-https://coderwall.com/p/t39nmw/minitest-testing-json-apis (only for the ":format => :json" code)
 http://stackoverflow.com/questions/8282116/rails-how-to-unit-test-a-json-controller
 
 
