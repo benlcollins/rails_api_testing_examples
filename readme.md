@@ -45,7 +45,7 @@ require 'test_helper'
 
 class MuppetTest < ActiveSupport::TestCase
 	test "muppet should not save without a name" do
-		muppet = Muppet.new(name: "", image_url: "whatever.com/image.jpg")
+		muppet = Muppet.new(name: "", image_url: "image.jpg")
 		assert_not muppet.save, "Saved muppet without a name"
 	end
 
@@ -61,7 +61,7 @@ Then run this test from the command line with:
 rake test
 ```
 
-This test should fail!
+This test should fail! assert_not ensures that test is false, but because we removed validation, our muppet save so the statement muppet.save was true.
 
 ```
 FF
@@ -99,7 +99,7 @@ Let's add a final test to ensure that muppets with all parameters do indeed save
 
 ```ruby
 test "muppet should save with valid parameters" do
-	muppet = Muppet.new(name: "Muppet Name", image_url: "muppet_images.com/image.jpg")
+	muppet = Muppet.new(name: "Muppet Name", image_url: "image.jpg")
 	assert muppet.valid?, "Muppet not valid without all parameters"
 	assert_equal "Muppet Name", muppet.name, "The name of the muppets does not match!"
 end
