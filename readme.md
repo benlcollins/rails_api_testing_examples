@@ -222,6 +222,22 @@ Again, start by creating a new branch:
 git checkout -b rspec_example
 ```
 
+RSpec doesn’t ship with Rails so we have to add it to our Gemfile and then install it, by adding the rspec-rails gem to development and test environments (https://github.com/rspec/rspec-rails).
+
+In Gemfile:
+
+```
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+end
+```
+
+Then
+
+```
+bundle install
+```
+
 
 ## Resources:
 
