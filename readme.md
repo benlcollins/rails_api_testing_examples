@@ -3,7 +3,7 @@
 ## Step 1:
 
 Get the Muppets app up and running locally:
-https://github.com/benlcollins/rails_api_testing_examples/tree/master/muppets-api
+https://github.com/benlcollins/rails_api_testing_examples/tree/master/muppets-api	
 
 ## Step 2: Writing tests with the Minitest framework
 
@@ -28,7 +28,7 @@ git checkout -b minitest_example
 
 ### Model testing
 
-First, go to the muppet model: app/models/muppet.rb and comment out the two validation lines:
+First, go to the muppet model: **app/models/muppet.rb** and comment out the two validation lines:
 
 ```ruby
 class Muppet < ActiveRecord::Base
@@ -37,7 +37,7 @@ class Muppet < ActiveRecord::Base
 end
 ```
 
-Create a test file for the muppets model: test/models/muppet_model_test.rb
+Create a test file for the muppets model: **test/models/muppet_model_test.rb**
 
 Add code:
 ```ruby
@@ -115,7 +115,7 @@ Try changing "Muppet Name" to "Kermit" in the "assert_equal" line...
 
 ### Controller Test
 
-Create test file: test/controllers/api_controller_test.rb
+Create test file: **test/controllers/api_controller_test.rb**
 
 Add outline code:
 ```ruby
@@ -128,7 +128,11 @@ class ApiControllerTest < ActionController::TestCase
 end
 ```
 
-Run just this new test with: "rake test test/controllers/api_controller_test.rb"
+Run just this new test with: 
+
+```
+rake test test/controllers/api_controller_test.rb
+```
 
 Get the index page and add first assertion:
 
@@ -254,7 +258,7 @@ Notice the new spec folder has been created in our root directory.
 
 ### Model testing
 
-Create a new folder and file for model tests: spec/models/muppet_spec.rb
+Create a new folder and file for model tests: **spec/models/muppet_spec.rb**
 
 Add the code for our muppet test:
 
@@ -294,7 +298,7 @@ end
 
 ### Controller testing
 
-Create new folder and file for controller tests: spec/controllers/api_controller_spec.rb
+Create new folder and file for controller tests: **spec/controllers/api_controller_spec.rb**
 
 Add code:
 
@@ -336,7 +340,7 @@ and
 bundle install
 ```
 
-then define a muppet class in **factories.rb** in spec folder and add code:
+then define a muppet class in **spec/factories.rb** and add code:
 
 ```ruby
 FactoryGirl.define do
@@ -350,17 +354,17 @@ Then add code for returning muppets as JSON:
 
 ```ruby
 it "returns all the muppets as JSON" do
-    	FactoryGirl.create :muppet, name: "gonzo", image_url: "gonzo.jpg"
-    	FactoryGirl.create :muppet, name: "kermit", image_url: "kermit.jpg"
+	FactoryGirl.create :muppet, name: "gonzo", image_url: "gonzo.jpg"
+	FactoryGirl.create :muppet, name: "kermit", image_url: "kermit.jpg"
 
-    	get :index, {}, { "Accept" => "application/json" }
+	get :index, {}, { "Accept" => "application/json" }
 
-    	body = JSON.parse(response.body)
-    	muppet_names = body.map { |m| m["name"] }
+	body = JSON.parse(response.body)
+	muppet_names = body.map { |m| m["name"] }
 
-    	expect(muppet_names).to match_array(["gonzo","kermit"])
+	expect(muppet_names).to match_array(["gonzo","kermit"])
 
-    end
+end
 ```
 
 For SHOW, PUT and DELETE HTTP verbs, some ideas for tests in this post:
