@@ -170,16 +170,17 @@ Confirm that it's JSON being returned, add this assertion:
 ```ruby
 test "it should return JSON" do 
 	get :index, :format => :json
+	assert_response :success
 end
 ```
 
 Run the controller test again. It should pass:
 
 ```
-..
+.
 ```
 
-Now we want some seed data to use for testing, which we create with...
+Now we want some seed data to use for testing, which we create with:
 
 #### Fixtures
 
