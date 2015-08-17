@@ -22,7 +22,7 @@ Look in your Rails app folder now and you can see the "test" folder with the fol
 
 Start by creating a new branch:
 
-```git
+```
 git checkout -b minitest_example
 ```
 
@@ -105,7 +105,7 @@ test "muppet should save with valid parameters" do
 end
 ```
 
-This should save with 3 runs and 4 assertions "..."
+This should save with 3 runs and 4 assertions:
 
 ```
 ...
@@ -137,7 +137,7 @@ get :index
 assert_response :success	
 ```
 
-Run to see the test pass. Asserts that the response comes with a specific status code, where *:success* indicates a 200-299 code was returned (see http://apidock.com/rails/Test/Unit/Assertions/assert_response).
+Run to see the test pass. Asserts that the response comes with a specific status code, where **:success** indicates a 200-299 code was returned (see http://apidock.com/rails/Test/Unit/Assertions/assert_response).
 
 Confirm that it's JSON being returned, add this assertion:
 
@@ -195,17 +195,21 @@ test "should add a new muppet with post action" do
 end
 ```
 
-*the post create test is not working with this code - TBC*
+*The post create test is not working with this code - TBC*
 
 Add binding.pry and review in terminal window
 
 To finish, merge with master:
 
-git add 
-git commit -m 'Add minitest framework test suite'
-git checkout master
-git merge minitest_example
+```
+git add
 
+git commit -m 'Add minitest framework test suite'
+
+git checkout master
+
+git merge minitest_example
+```
 
 
 ## Step 3: Writing tests with the RSpec testing framework
