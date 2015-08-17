@@ -216,11 +216,17 @@ git merge minitest_example
 
 RSpec is a popular third-party framework for testing that allows you to write readable tests.
 
+http://rspec.info/documentation/
+
 Again, start by creating a new branch:
 
 ```
 git checkout -b rspec_example
 ```
+
+### RSpec setup
+
+RSpec is a testing framework for plain old Ruby applications. RSpec-rails extends RSpec so you can specify behaviour of your Rails app (https://github.com/dchelimsky/rspec/wiki/rails).
 
 RSpec doesn’t ship with Rails so we have to add it to our Gemfile and then install it, by adding the rspec-rails gem to development and test environments (https://github.com/rspec/rspec-rails).
 
@@ -238,8 +244,91 @@ Then
 bundle install
 ```
 
+Initialize the spec directory:
 
-## Resources:
+```
+rails generate rspec:install
+```
+
+Notice the new spec folder has been created in our root directory.
+
+### Model testing
+
+Create a new folder and file for model tests: spec/models/muppet_spec.rb
+
+Add the code for our muppet test:
+
+```ruby
+require 'rails_helper'
+
+RSpec.describe Muppet, :type => :model do
+	it "doesn't save without a valid name" do
+		muppet = Muppet.new
+		expect(muppet).not_to be_valid, "Muppet saved without a valid name"
+	end
+end
+```
+
+Comment out the name validation in muppet model and run model test
+
+```
+bundle exec rspec spec/models
+```
+
+.....it FAILS.
+
+Uncomment out the name validation and the test should now pass.
+
+Add code to test image_url validation.
+
+And test that it saves muppet with valid attributes *(question - is this necessary? This passes test with or without validations)*:
+
+```ruby
+it "saves with valid name and image_url" do
+	muppet = Muppet.new(name: "muppet", image_url: "muppet.jpg")
+	expect(muppet).to be_valid, "Muppet saved without a valid name and image_url"
+end
+```
+
+### Controller testing
+
+Create new folder and file for controller tests: spec/controllers/api_controller_spec.rb
+
+Add code:
+
+```ruby
+require 'rails_helper'
+
+RSpec.describe ApiController, :type => :controller do
+	describe "GET #index" do
+    it "responds successfully with an HTTP 200 status code" do
+      get :index
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+  end
+end
+```
+
+and run controller tests with:
+
+```
+bundle exec rspec spec/controllers
+```
+
+This test should pass:
+
+```
+.
+```
+
+Introduce Factory Girl to create data, and then test api endpoints:
+
+See:
+http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/
+
+
+## Further Resources:
 
 http://buildingrails.com/a/rails_unit_testing_with_minitest_for_beginners
 http://buildingrails.com/a/rails_functional_testing_controllers_for_beginners_part_1
