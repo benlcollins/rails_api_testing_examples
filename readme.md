@@ -2,7 +2,7 @@
 
 ## Step 1:
 
-Get the Muppets app up and running locally:
+Get the Muppets app up and set up running locally:
 https://github.com/benlcollins/rails_api_testing_examples/tree/master/muppets-api	
 
 ## Step 2: Writing tests with the Minitest framework
@@ -95,7 +95,7 @@ It fails because the flunk assertion always fails. Useful to signal to other dev
 
 Comment out or delete the flunk test now.
 
-Let's add a final test to ensure that muppets with all parameters do indeed save *(question - is this necessary? This passes test with or without validations)*:
+Let's add a final test to ensure that muppets with all parameters do indeed save *(question - is this necessary? This test passes with or without validations)*:
 
 ```ruby
 test "muppet should save with valid parameters" do
@@ -287,7 +287,7 @@ This test FAILS at first, so uncomment out the name validation and the test shou
 
 Add code to test image_url validation.
 
-And test that it saves muppet with valid attributes *(question - is this necessary? This passes test with or without validations)*:
+And test that it saves muppet with valid attributes *(question - is this necessary?)*:
 
 ```ruby
 it "saves with valid name and image_url" do
