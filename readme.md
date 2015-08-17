@@ -322,9 +322,46 @@ This test should pass:
 .
 ```
 
-Introduce Factory Girl to create data, and then test api endpoints:
+Install Factory Girl gem (https://github.com/thoughtbot/factory_girl_rails) as a fixtures replacement, to create data for RSpec testing, and then test api endpoints.
 
-See:
+```
+gem 'factory_girl_rails'
+```
+
+and 
+
+```
+bundle install
+```
+
+then define a muppet class in **factories.rb** in spec folder and add code:
+
+```ruby
+FactoryGirl.define do
+
+  factory :muppet
+
+end
+```
+
+Then add code for returning muppets as JSON:
+
+```ruby
+it "returns all the muppets as JSON" do
+    	FactoryGirl.create :muppet, name: "gonzo", image_url: "gonzo.jpg"
+    	FactoryGirl.create :muppet, name: "kermit", image_url: "kermit.jpg"
+
+    	get :index, {}, { "Accept" => "application/json" }
+
+    	body = JSON.parse(response.body)
+    	muppet_names = body.map { |m| m["name"] }
+
+    	expect(muppet_names).to match_array(["gonzo","kermit"])
+
+    end
+```
+
+For SHOW, PUT and DELETE HTTP verbs, some ideas for tests in this post:
 http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/
 
 
