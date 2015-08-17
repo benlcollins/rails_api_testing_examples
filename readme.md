@@ -61,7 +61,7 @@ Then run this test from the command line with:
 rake test
 ```
 
-This test should fail! assert_not ensures that test is false, but because we removed validation, our muppet save so the statement muppet.save was true.
+This test should fail! *assert_not* ensures that test is false, but because we removed validation the statement *muppet.save* was true, so the test failed.
 
 ```
 FF
