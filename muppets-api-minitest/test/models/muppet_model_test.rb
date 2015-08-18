@@ -21,8 +21,8 @@ class MuppetTest < ActiveSupport::TestCase
 		assert @muppet.save 
 	end
 
-	test "screaming muppet is uppercase" do
-		assert_equal "KERMIT", @muppet.screaming_muppet, "Muppet not in uppercase"
+	test "shouting muppet is uppercase" do
+		assert_equal "KERMIT", @muppet.shouting_muppet, "Muppet not in uppercase"
 	end
 
 	# test "test not finished" do

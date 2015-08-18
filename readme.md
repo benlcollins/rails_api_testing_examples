@@ -65,11 +65,11 @@ This test should fail!
 
 *assert_not* ensures that test is false, but because we removed validation the statement *muppet.save* was true, so the test failed:
 
+You should see two F's in your console and the two error messages we included, because at the moment you can save a muppet without a name or url.
+
 ```
 FF
 ```
-
-You should see two F's in your console and the two error messages we included, because at the moment you can save a muppet without a name or url. 
 
 **Fix that by going back to your muppet model in the app folder and uncommenting the two validation lines.**
 
@@ -125,11 +125,11 @@ Let's add a final test to ensure that muppets with all parameters do indeed save
 
 ```ruby
 test "valid muppet does save" do
-		assert @muppet.save 
-	end
+	assert @muppet.save 
+end
 ```
 
-This should save with 3 runs and 4 assertions:
+This should save with 3 runs and 3 assertions:
 
 ```
 ...
@@ -144,7 +144,7 @@ class Muppet < ActiveRecord::Base
   validates :name, presence: true
   validates :image_url, presence: true
 
-  def screaming_muppet
+  def shouting_muppet
   	return name.upcase
   end
 end
@@ -154,8 +154,8 @@ and then write the corresponding test:
 
 ```ruby
 test "shouting muppet is uppercase" do
-		assert_equal "KERMIT", @muppet.shouting_muppet, "Muppet not uppercase"
-	end
+	assert_equal "KERMIT", @muppet.shouting_muppet, "Muppet not uppercase"
+end
 ```
 
 ### Controller Test
@@ -173,17 +173,19 @@ class ApiControllerTest < ActionController::TestCase
 end
 ```
 
+Get the index page and add first assertion, specifying the format is JSON:
+
+```ruby
+test "should get success response after get request" do
+	get :index, :format => :json
+	assert_response :success	
+end
+```
+
 Run just this new test with: 
 
 ```
 rake test test/controllers/api_controller_test.rb
-```
-
-Get the index page and add first assertion, specifying the format is JSON:
-
-```ruby
-get :index, :format => :json
-assert_response :success	
 ```
 
 Run to see the test pass. Asserts that the response comes with a specific status code, where **:success** indicates a 200-299 code was returned (see http://apidock.com/rails/Test/Unit/Assertions/assert_response).
@@ -307,10 +309,10 @@ require 'rails_helper'
 
 describe Muppet, :type => :model do
 	
-	let(:muppet){Muppet.new(name: "", image_url: "muppet.jpg")}
+	let(:no_name){Muppet.new(name: "", image_url: "muppet.jpg")}
 
 	it "doesn't save a muppet without a name" do
-		expect(muppet).not_to be_valid, "Muppet saved without a name"
+		expect(no_name).not_to be_valid, "Muppet saved without a name"
 	end
 
 end
@@ -334,11 +336,20 @@ This test FAILS at first, so **uncomment out the name validation** and the test 
 
 Add code to test image_url validation.
 
+```ruby
+let(:no_image){Muppet.new(name: "muppet", image_url: "")}
+
+it "doesn't save without a valid image_url" do
+	expect(no_image).not_to be_valid, "Muppet saved without a valid image_url"
+end
+```
+
 And test that it saves muppet with valid attributes:
 
 ```ruby
+let(:muppet){Muppet.new(name: "muppet", image_url: "muppet.jpg")}
+
 it "saves with valid name and image_url" do
-	muppet = Muppet.new(name: "muppet", image_url: "muppet.jpg")
 	expect(muppet).to be_valid, "Muppet saved without a valid name and image_url"
 end
 ```
@@ -417,6 +428,19 @@ end
 For SHOW, PUT and DELETE HTTP verbs, some ideas for tests in this post:
 http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/
 
+To finish, don't for get to merge.
+
+Commit changes to branch, checkout to master and merge rspec work:
+
+```
+git add
+
+git commit -m 'Add RSpec framework test suite'
+
+git checkout master
+
+git merge rspec_example
+```
 
 ## Create better looking output formats in terminal
 
