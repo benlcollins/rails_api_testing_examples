@@ -58,10 +58,12 @@ end
 
 Then run this test from the command line with:
 ```
-rake test
+bundle exec rake test
 ```
 
-This test should fail! *assert_not* ensures that test is false, but because we removed validation the statement *muppet.save* was true, so the test failed.
+This test should fail! 
+
+*assert_not* ensures that test is false, but because we removed validation the statement *muppet.save* was true, so the test failed:
 
 ```
 FF
@@ -112,7 +114,7 @@ class MuppetTest < ActiveSupport::TestCase
 		assert_not @muppet.save, "Test fails because app saves muppet without a name"
 	end
 
-	test "muppet should not save without an image_url" do
+	test "muppet does not save without an image_url" do
 		@muppet.image_url = nil
 		assert_not @muppet.save, "Saved muppet without an image url"
 	end
@@ -133,7 +135,28 @@ This should save with 3 runs and 4 assertions:
 ...
 ```
 
-Try changing "Muppet Name" to "Kermit" in the "assert_equal" line...
+And finally, add a method to the muppet model and write a test for that. 
+
+In **app/models/muppet.rb** add:
+
+```ruby
+class Muppet < ActiveRecord::Base
+  validates :name, presence: true
+  validates :image_url, presence: true
+
+  def screaming_muppet
+  	return name.upcase
+  end
+end
+```
+
+and then write the corresponding test:
+
+```ruby
+test "shouting muppet is uppercase" do
+		assert_equal "KERMIT", @muppet.shouting_muppet, "Muppet not uppercase"
+	end
+```
 
 ### Controller Test
 
@@ -156,29 +179,14 @@ Run just this new test with:
 rake test test/controllers/api_controller_test.rb
 ```
 
-Get the index page and add first assertion:
+Get the index page and add first assertion, specifying the format is JSON:
 
 ```ruby
-get :index
+get :index, :format => :json
 assert_response :success	
 ```
 
 Run to see the test pass. Asserts that the response comes with a specific status code, where **:success** indicates a 200-299 code was returned (see http://apidock.com/rails/Test/Unit/Assertions/assert_response).
-
-Confirm that it's JSON being returned, add this assertion:
-
-```ruby
-test "it should return JSON" do 
-	get :index, :format => :json
-	assert_response :success
-end
-```
-
-Run the controller test again. It should pass:
-
-```
-.
-```
 
 Now we want some seed data to use for testing, which we create with:
 
@@ -208,30 +216,34 @@ test "get 'show' test" do
 	get :show, :id => @one["id"]
 	assert_response :success
 	body = JSON.parse(response.body)
-	assert_equal "kermit", body['name']
+	assert_equal "kermit", body["name"].downcase
 end
 ```
 
-Lastly, test the post action:
+Add two tests for the create action:
 
 ```ruby
 # test post action with valid muppet
-test "should add a new muppet with post action" do
+test "adds a valid new muppet with post action" do
   post :create, { name: "New_muppet", image_url: "New_muppet" }	
   assert_response :success
   assert_equal "New_muppet", Muppet.last.name
 end
 
 # test post action with invalid muppet
-test "should add a new muppet without a name with post action" do
+test "does not add a new muppet with invalid parameters" do
   post :create, { name: nil, image_url: "New_muppet" }	
-  assert_response 418
+  assert_response 418  # tests for status code 418 because we specifically setup our app this way
 end
 ```
 
-Add binding.pry and review in terminal window
+Run the controller test again. It should pass:
 
-To finish, merge with master:
+```
+......
+```
+
+To finish, commit changes to branch, checkout to master and merge minitest work:
 
 ```
 git add
@@ -293,11 +305,12 @@ Add the code for our muppet test:
 ```ruby
 require 'rails_helper'
 
-RSpec.describe Muppet, :type => :model do
+describe Muppet, :type => :model do
+	
+	let(:muppet){Muppet.new(name: "", image_url: "muppet.jpg")}
 
-	it "doesn't save without a valid name" do
-		muppet = Muppet.new(name: "", image_url: "muppet.jpg")
-		expect(muppet).not_to be_valid, "Muppet saved without a valid name"
+	it "doesn't save a muppet without a name" do
+		expect(muppet).not_to be_valid, "Muppet saved without a name"
 	end
 
 end
@@ -313,7 +326,7 @@ bundle exec rspec spec/models
 F
 ```
 
-This test FAILS at first, so uncomment out the name validation and the test should now pass.
+This test FAILS at first, so **uncomment out the name validation** and the test should now pass:
 
 ```
 .
@@ -339,7 +352,7 @@ Add code:
 ```ruby
 require 'rails_helper'
 
-RSpec.describe ApiController, :type => :controller do
+describe ApiController, :type => :controller do
 	describe "GET #index" do
     it "responds successfully with an HTTP 200 status code" do
       get :index
@@ -419,6 +432,8 @@ http://buildingrails.com/a/rails_functional_testing_controllers_for_beginners_pa
 http://commandercoriander.net/blog/2014/01/04/test-driving-a-json-api-in-rails/
 http://matthewlehner.net/rails-api-testing-guidelines/
 http://stackoverflow.com/questions/8282116/rails-how-to-unit-test-a-json-controller
+https://robots.thoughtbot.com/how-we-test-rails-applications
+
 
 
 

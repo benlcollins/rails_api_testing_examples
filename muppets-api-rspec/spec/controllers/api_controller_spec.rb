@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'pry'
 
-RSpec.describe ApiController, :type => :controller do
+describe ApiController, :type => :controller do
 	
 	# index test
 	describe "GET #index" do
@@ -18,7 +18,8 @@ RSpec.describe ApiController, :type => :controller do
     	get :index, {}, { "Accept" => "application/json" }
 
     	body = JSON.parse(response.body)
-    	muppet_names = body.map { |m| m["name"] }
+    	muppet_names = body.map { |m| m['name'] }
+      # muppet_names = body.map(&:name)
 
     	expect(muppet_names).to match_array(["gonzo","kermit"])
     end
