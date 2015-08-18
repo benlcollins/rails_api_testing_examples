@@ -215,14 +215,19 @@ end
 Lastly, test the post action:
 
 ```ruby
+# test post action with valid muppet
 test "should add a new muppet with post action" do
-  assert_difference('Muppet.count') do
-    post :create, muppet: { name: "New Muppet", image_url: "New Muppet picture" }
-  end
+  post :create, { name: "New_muppet", image_url: "New_muppet" }	
+  assert_response :success
+  assert_equal "New_muppet", Muppet.last.name
+end
+
+# test post action with invalid muppet
+test "should add a new muppet without a name with post action" do
+  post :create, { name: nil, image_url: "New_muppet" }	
+  assert_response 418
 end
 ```
-
-*The post create test is not working with this code - TBC*
 
 Add binding.pry and review in terminal window
 
